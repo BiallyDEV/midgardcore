@@ -1,13 +1,15 @@
 package me.bially.midgardcore;
 
+import io.th0rgal.oraxen.OraxenPlugin;
+import io.th0rgal.oraxen.mechanics.MechanicsManager;
+import me.bially.midgardcore.archeology.ArcheologyMechanicFactory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new Archaeology(), this);
-
+        MechanicsManager.registerMechanicFactory("archeology", ArcheologyMechanicFactory::new);
         System.out.println("MidgardCore enabled.");
     }
 
