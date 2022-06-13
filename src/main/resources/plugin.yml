@@ -1,0 +1,6 @@
+name: MidgardCore
+version: ${project.version}
+main: me.bially.midgardcore.Main
+api-version: 1.18
+authors: [ Bially ]
+depend: [Oraxen]

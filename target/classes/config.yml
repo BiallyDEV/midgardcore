@@ -1,0 +1,11 @@
+#Follow along this example to add your own config for blocks.
+
+blocks:
+#For Oraxen blocks:
+  "oraxen:silver_block":
+    can-place-on:
+      - dirt
+#For Vanilla blocks:
+  "OAK_PLANKS":
+    can-place-on:
+      - stone
