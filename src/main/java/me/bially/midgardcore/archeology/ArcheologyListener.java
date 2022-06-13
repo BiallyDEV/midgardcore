@@ -6,7 +6,6 @@ import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanic
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Tripwire;
@@ -17,7 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.StringUtil;
 
 import java.util.Objects;
 
@@ -66,6 +64,7 @@ public class ArcheologyListener implements Listener {
             mechanic = (ArcheologyMechanic) factory.getMechanic(stringMechanic.getItemID());
             if (mechanic == null || !mechanic.hasNextBlock() || event.getAction() != mechanic.getOnAction()) return;
             if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem())) return;
+            event.setCancelled(true);
 
             if (Objects.equals(mechanic.getNextBlock(), "AIR")) block.setType(Material.AIR, false);
             else StringBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
