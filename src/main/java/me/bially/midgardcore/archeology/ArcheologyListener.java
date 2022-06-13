@@ -3,6 +3,7 @@ package me.bially.midgardcore.archeology;
 import io.th0rgal.oraxen.items.OraxenItems;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.StringUtil;
 
 import java.util.Objects;
 
@@ -47,8 +49,13 @@ public class ArcheologyListener implements Listener {
         if (Objects.equals(mechanic.getNextBlock(), "AIR")) block.setType(Material.AIR, false);
         else NoteBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
 
-        if (mechanic.hasDrop())
-            player.getWorld().dropItemNaturally(block.getLocation(), mechanic.getDrop());
+        if (mechanic.hasDrops())
+            for (String d : mechanic.getDrops()) {
+                ItemStack drop;
+                if (StringUtils.isAllUpperCase(d)) drop = new ItemStack(Material.valueOf(d));
+                else drop = OraxenItems.getItemById(d).build();
+                player.getWorld().dropItemNaturally(block.getLocation(), drop);
+            }
         player.swingMainHand();
     }
 }
