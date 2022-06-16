@@ -73,9 +73,9 @@
         <dependency>
             <groupId>com.github.th0rgal</groupId>
             <artifactId>oraxen</artifactId>
-            <version>1.135.4</version>
+            <version>1.135.6</version>
             <scope>system</scope>
-            <systemPath>C:/Users/mrspe/IdeaProjects/midgardcore/lib/oraxen-1.135.4.jar</systemPath>
+            <systemPath>C:/Users/mrspe/IdeaProjects/midgardcore/lib/oraxen-1.135.6.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
