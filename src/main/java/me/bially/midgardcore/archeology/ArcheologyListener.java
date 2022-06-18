@@ -43,18 +43,9 @@ public class ArcheologyListener implements Listener {
 
             mechanic = (ArcheologyMechanic) factory.getMechanic(noteMechanic.getItemID());
             if (mechanic == null || !mechanic.hasNextBlock() || event.getAction() != mechanic.getOnAction()) return;
-            if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem()))
-                return;
-            if (Objects.equals(mechanic.getNextBlock(), "AIR")) block.setType(Material.AIR, false);
-            else NoteBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
+            if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem())) return;
 
-            if (mechanic.hasDrops())
-                for (String d : mechanic.getDrops()) {
-                    ItemStack drop;
-                    if (StringUtils.isAllUpperCase(d)) drop = new ItemStack(Material.valueOf(d));
-                    else drop = OraxenItems.getItemById(d).build();
-                    player.getWorld().dropItemNaturally(block.getLocation(), drop);
-                }
+            setNextBlock(mechanic, block, player);
         }
 
         else if (block.getType() == Material.TRIPWIRE) {
@@ -66,17 +57,26 @@ public class ArcheologyListener implements Listener {
             if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem())) return;
             event.setCancelled(true);
 
-            if (Objects.equals(mechanic.getNextBlock(), "AIR")) block.setType(Material.AIR, false);
-            else StringBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
-
-            if (mechanic.hasDrops())
-                for (String d : mechanic.getDrops()) {
-                    ItemStack drop;
-                    if (StringUtils.isAllUpperCase(d)) drop = new ItemStack(Material.valueOf(d));
-                    else drop = OraxenItems.getItemById(d).build();
-                    player.getWorld().dropItemNaturally(block.getLocation(), drop);
-                }
+            setNextBlock(mechanic, block, player);
         }
         player.swingMainHand();
+    }
+
+    private void setNextBlock(ArcheologyMechanic mechanic, Block block, Player player) {
+
+        if (mechanic.hasDrops()) {
+            for (String d : mechanic.getDrops()) {
+                ItemStack drop;
+                if (StringUtils.isAllUpperCase(d)) drop = new ItemStack(Material.valueOf(d));
+                else drop = OraxenItems.getItemById(d).build();
+                player.getWorld().dropItemNaturally(block.getLocation(), drop);
+            }
+        }
+
+        if (Objects.equals(mechanic.getNextBlock(), "AIR")) block.setType(Material.AIR, false);
+        else if (factory.getMechanic(mechanic.getNextBlock()) instanceof StringBlockMechanic)
+            StringBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
+        else if (factory.getMechanic(mechanic.getNextBlock()) instanceof NoteBlockMechanic)
+            NoteBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
     }
 }
