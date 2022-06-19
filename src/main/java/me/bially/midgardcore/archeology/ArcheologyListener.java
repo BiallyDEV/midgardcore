@@ -1,11 +1,13 @@
 package me.bially.midgardcore.archeology;
 
+import io.th0rgal.oraxen.OraxenPlugin;
 import io.th0rgal.oraxen.items.OraxenItems;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Tripwire;
@@ -43,26 +45,33 @@ public class ArcheologyListener implements Listener {
 
             mechanic = (ArcheologyMechanic) factory.getMechanic(noteMechanic.getItemID());
             if (mechanic == null || !mechanic.hasNextBlock() || event.getAction() != mechanic.getOnAction()) return;
-            if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem())) return;
-
+            if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem()))
+                return;
             setNextBlock(mechanic, block, player);
-        }
-
-        else if (block.getType() == Material.TRIPWIRE) {
+        } else if (block.getType() == Material.TRIPWIRE) {
             StringBlockMechanic stringMechanic = StringBlockMechanicFactory.getBlockMechanic(StringBlockMechanicFactory.getCode((Tripwire) block.getBlockData()));
             if (stringMechanic == null) return;
 
             mechanic = (ArcheologyMechanic) factory.getMechanic(stringMechanic.getItemID());
             if (mechanic == null || !mechanic.hasNextBlock() || event.getAction() != mechanic.getOnAction()) return;
-            if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem())) return;
+            if (mechanic.hasItemRequirement() && !Objects.equals(OraxenItems.getIdByItem(item), mechanic.getRequiredItem()))
+                return;
             event.setCancelled(true);
-
             setNextBlock(mechanic, block, player);
         }
         player.swingMainHand();
     }
 
     private void setNextBlock(ArcheologyMechanic mechanic, Block block, Player player) {
+        if (Objects.equals(mechanic.getNextBlock(), "AIR")) block.setType(Material.AIR, false);
+        else if (StringBlockMechanicFactory.getInstance().getMechanic(mechanic.getNextBlock()) != null) {
+            if (block.getType() != Material.TRIPWIRE) block.setType(Material.AIR, false);
+            Bukkit.getScheduler().runTaskLater(OraxenPlugin.get(), Runnable ->
+                    StringBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock()), 2);
+        }
+        else if (NoteBlockMechanicFactory.getInstance().getMechanic(mechanic.getNextBlock()) != null) {
+            NoteBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
+        }
 
         if (mechanic.hasDrops()) {
             for (String d : mechanic.getDrops()) {
@@ -72,11 +81,5 @@ public class ArcheologyListener implements Listener {
                 player.getWorld().dropItemNaturally(block.getLocation(), drop);
             }
         }
-
-        if (Objects.equals(mechanic.getNextBlock(), "AIR")) block.setType(Material.AIR, false);
-        else if (factory.getMechanic(mechanic.getNextBlock()) instanceof StringBlockMechanic)
-            StringBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
-        else if (factory.getMechanic(mechanic.getNextBlock()) instanceof NoteBlockMechanic)
-            NoteBlockMechanicFactory.setBlockModel(block, mechanic.getNextBlock());
     }
 }
