@@ -23,7 +23,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="oraxen-1.133.0" level="project" />
-    <orderEntry type="library" name="oraxen-1.135.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:31.0.1-jre" level="project" />
@@ -54,13 +53,14 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-tree:9.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-analysis:9.2" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: com.github.th0rgal:oraxen:1.135.4">
+      <library name="Maven: com.github.th0rgal:oraxen:1.135.1">
         <CLASSES>
-          <root url="jar://$USER_HOME$/IdeaProjects/midgardcore/lib/oraxen-1.135.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/oraxen-1.135.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="oraxen-1.135.6" level="project" />
   </component>
 </module>
