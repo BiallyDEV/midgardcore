@@ -1,7 +1,4 @@
-me\bially\midgardcore\StripLogMechanic.class
 me\bially\midgardcore\Main.class
 me\bially\midgardcore\archeology\ArcheologyMechanicFactory.class
-me\bially\midgardcore\customsoundsystem\CustomSoundSystemListener.class
 me\bially\midgardcore\archeology\ArcheologyListener.class
 me\bially\midgardcore\archeology\ArcheologyMechanic.class
-me\bially\midgardcore\listener\BlockPlaceListener.class
